@@ -12,6 +12,7 @@ object frmEncryptor: TfrmEncryptor
   Font.Name = 'Verdana'
   Font.Style = []
   OldCreateOrder = False
+  Position = poScreenCenter
   Scaled = False
   OnActivate = FormActivate
   DesignSize = (
@@ -24,12 +25,12 @@ object frmEncryptor: TfrmEncryptor
     Top = 392
     Width = 40
     Height = 13
-    Caption = 'Result:'
+    Caption = '&Result:'
     FocusControl = edtLBSymmetricResult
   end
   object Label8: TLabel
     Left = 32
-    Top = 169
+    Top = 167
     Width = 39
     Height = 13
     Caption = '&String:'
@@ -37,16 +38,21 @@ object frmEncryptor: TfrmEncryptor
   end
   object Label2: TLabel
     Left = 33
-    Top = 8
+    Top = 16
     Width = 445
-    Height = 67
+    Height = 59
     Anchors = [akLeft, akTop, akRight, akBottom]
     AutoSize = False
     Caption = 
-      'These use TurboPower'#39's LockBox components to encrypt and decrypt' +
-      ' strings.  You can then copy these strings to the clipboard and ' +
-      'paste them in your application, ready for use.  All three use th' +
-      'e ECB Cipher mode and Rijndael uses a 256-bit key.'
+      'These use TurboPower'#39's LockBox components version 2.08 to encryp' +
+      't and decrypt strings.  You can then copy these strings to the c' +
+      'lipboard and paste them in your application, ready for use.  '
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Verdana'
+    Font.Style = []
+    ParentFont = False
     WordWrap = True
   end
   object lblKey: TLabel
@@ -65,7 +71,7 @@ object frmEncryptor: TfrmEncryptor
     Width = 445
     Height = 21
     Anchors = [akLeft, akTop, akRight]
-    TabOrder = 0
+    TabOrder = 3
   end
   object btnLBSymmetricDecrypt: TButton
     Left = 340
@@ -81,7 +87,7 @@ object frmEncryptor: TfrmEncryptor
     Font.Name = 'MS Sans Serif'
     Font.Style = [fsBold]
     ParentFont = False
-    TabOrder = 1
+    TabOrder = 6
     OnClick = btnLBSymmetricDecryptClick
   end
   object edtLBSymmetricResult: TEdit
@@ -93,7 +99,7 @@ object frmEncryptor: TfrmEncryptor
     Anchors = [akLeft, akTop, akRight]
     Color = clBtnFace
     ReadOnly = True
-    TabOrder = 2
+    TabOrder = 7
   end
   object btnCopyLBSymmetricResult: TButton
     Left = 360
@@ -102,7 +108,7 @@ object frmEncryptor: TfrmEncryptor
     Height = 25
     Anchors = [akTop, akRight]
     Caption = '&Copy to Clipboard'
-    TabOrder = 3
+    TabOrder = 8
     OnClick = btnCopyLBSymmetricResultClick
   end
   object btnLBSymmetricEncrypt: TButton
@@ -119,7 +125,7 @@ object frmEncryptor: TfrmEncryptor
     Font.Name = 'MS Sans Serif'
     Font.Style = [fsBold]
     ParentFont = False
-    TabOrder = 4
+    TabOrder = 5
     OnClick = btnLBSymmetricEncryptClick
   end
   object radAlgorithm: TRadioGroup
@@ -127,13 +133,13 @@ object frmEncryptor: TfrmEncryptor
     Top = 81
     Width = 129
     Height = 80
-    Caption = '&Encryption Type'
+    Caption = 'Encryption &Type'
     ItemIndex = 0
     Items.Strings = (
       'Blowfish'
       'Triple-DES'
       'Rijndael (AES)')
-    TabOrder = 5
+    TabOrder = 0
   end
   object pnlKeys: TPanel
     Left = 32
@@ -141,7 +147,7 @@ object frmEncryptor: TfrmEncryptor
     Width = 445
     Height = 102
     BevelOuter = bvLowered
-    TabOrder = 6
+    TabOrder = 4
     object Label1: TLabel
       Left = 1
       Top = 1
@@ -157,6 +163,7 @@ object frmEncryptor: TfrmEncryptor
       Width = 70
       Height = 13
       Caption = '&Passphrase:'
+      FocusControl = edtSymmetricPassphrase
     end
     object edtSymmetricPassphrase: TEdit
       Left = 13
@@ -190,11 +197,11 @@ object frmEncryptor: TfrmEncryptor
     Width = 211
     Height = 80
     Caption = 'Cipher &Mode'
-    ItemIndex = 0
+    ItemIndex = 1
     Items.Strings = (
       'ECB - Electronic Code Book'
       'CBC - Cipher Block Chaining')
-    TabOrder = 7
+    TabOrder = 1
   end
   object radAESKeySize: TRadioGroup
     Left = 385
@@ -207,7 +214,17 @@ object frmEncryptor: TfrmEncryptor
       '128'
       '192'
       '256')
-    TabOrder = 8
+    TabOrder = 2
+  end
+  object btnAbout: TButton
+    Left = 32
+    Top = 434
+    Width = 83
+    Height = 25
+    Anchors = [akTop, akRight]
+    Caption = '&About ...'
+    TabOrder = 9
+    OnClick = btnAboutClick
   end
   object LbBlowfish: TLbBlowfish
     CipherMode = cmECB
@@ -224,5 +241,20 @@ object frmEncryptor: TfrmEncryptor
     KeySize = ks256
     Left = 296
     Top = 352
+  end
+  object dlgAbout: TTaskDialog
+    Buttons = <>
+    Caption = 'About this Program'
+    ExpandButtonCaption = 'GitHub'
+    ExpandedText = 
+      'https://github.com/corneliusdavid/encryptor  https://github.com/' +
+      'corneliusdavid/LockBox-2.08'
+    RadioButtons = <>
+    Text = 
+      'This program was written in Delphi many years ago. I forget whic' +
+      'h version it started in, but now compiles in Delphi 10 Seattle. ' +
+      'It uses an open source library called LockBox (version 2.08).'
+    Left = 216
+    Top = 416
   end
 end

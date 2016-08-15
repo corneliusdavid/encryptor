@@ -1,7 +1,6 @@
 program Encryptor;
 
 uses
-  ExceptionLog,
   Forms,
   EncryptorMain in 'EncryptorMain.pas' {frmEncryptor};
 

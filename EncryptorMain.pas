@@ -29,6 +29,8 @@ type
     radCipherMode: TRadioGroup;
     radAESKeySize: TRadioGroup;
     lblKey: TLabel;
+    btnAbout: TButton;
+    dlgAbout: TTaskDialog;
     procedure btnCopyLBSymmetricResultClick(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure edtKeyChange(Sender: TObject);
@@ -36,11 +38,13 @@ type
     procedure btnGenerateRandomKeyClick(Sender: TObject);
     procedure btnLBSymmetricEncryptClick(Sender: TObject);
     procedure btnLBSymmetricDecryptClick(Sender: TObject);
+    procedure btnAboutClick(Sender: TObject);
   private
     FKeyGenerated: Boolean;
     procedure CopyToClipboard(EditControl: TEdit);
     procedure SetKeyGenerated(const Value: Boolean);
     property KeyGenerated: Boolean read FKeyGenerated write SetKeyGenerated;
+    procedure SetupCipherMode;
   end;
 
 var
@@ -69,6 +73,11 @@ begin
   EditControl.SelectAll;
   EditControl.CopyToClipboard;
   EditControl.SelLength := 0;
+end;
+
+procedure TfrmEncryptor.btnAboutClick(Sender: TObject);
+begin
+  dlgAbout.Execute;
 end;
 
 procedure TfrmEncryptor.btnCopyLBSymmetricResultClick(Sender: TObject);
@@ -114,23 +123,30 @@ begin
   btnLBSymmetricDecrypt.Enabled := Value;
 end;
 
+procedure TfrmEncryptor.SetupCipherMode;
+begin
+  case radCipherMode.ItemIndex of
+    0:
+      begin
+        LbBlowfish.CipherMode := cmECB;
+        Lb3DES.CipherMode := cmECB;
+        LbRijndael.CipherMode := cmECB;
+      end;
+    1:
+      begin
+        LbBlowfish.CipherMode := cmCBC;
+        Lb3DES.CipherMode := cmCBC;
+        LbRijndael.CipherMode := cmCBC;
+      end;
+  end;
+end;
+
 var
   AES_KeySizes: array[0..2] of TLbKeySizeRDL = (ks128, ks192, ks256);
 
 procedure TfrmEncryptor.btnLBSymmetricEncryptClick(Sender: TObject);
 begin
-  case radCipherMode.ItemIndex of
-    0: begin
-         LbBlowfish.CipherMode := cmECB;
-         Lb3DES.CipherMode := cmECB;
-         LbRijndael.CipherMode := cmECB;
-       end;
-    1: begin
-         LbBlowfish.CipherMode := cmCBC;
-         Lb3DES.CipherMode := cmCBC;
-         LbRijndael.CipherMode := cmCBC;
-       end;
-  end;
+  SetupCipherMode;
 
   case radAlgorithm.ItemIndex of
     0: edtLBSymmetricResult.Text := {$IFDEF Unicode} lbBlowfish.EncryptStringW(edtSymmetricString.Text); {$ELSE} lbBlowfish.EncryptString(edtSymmetricString.Text); {$ENDIF}
@@ -144,6 +160,8 @@ end;
 
 procedure TfrmEncryptor.btnLBSymmetricDecryptClick(Sender: TObject);
 begin
+  SetupCipherMode;
+
   case radAlgorithm.ItemIndex of
     0: edtLBSymmetricResult.Text := {$IFDEF Unicode} lbBlowfish.DecryptStringW(edtSymmetricString.Text); {$ELSE} lbBlowfish.DecryptString(edtSymmetricString.Text); {$ENDIF}
     1: edtLBSymmetricResult.Text := {$IFDEF Unicode} lb3DES.DecryptStringW(edtSymmetricString.Text); {$ELSE} lb3DES.DecryptString(edtSymmetricString.Text); {$ENDIF}
